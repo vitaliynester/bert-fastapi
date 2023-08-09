@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>BERT compare text</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+<h1 class="text-center text-2xl">Сравнение текстов</h1>
+<div class="flex justify-between w-100">
+    <div class="w-100">
+        <textarea class="border-2 hover:border-gray-300" name="text1" id="text1" cols="30" rows="10">Первый текст</textarea>
+    </div>
+    <div class="text-center">
+        <br>
+        <p class="text-xl">
+            <span>Совпадение: </span>
+            <span id="percent">{{ percent }}</span>
+            <span>%</span>
+        </p>
+        <br>
+        <button type="submit" onclick="sendRequest()" class="w-100 py-2 px-4 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">Посчитать</button>
+    </div>
+    <div>
+        <textarea class="border-2 hover:border-gray-300" name="text2" id="text2" cols="30" rows="10">Второй текст</textarea>
+    </div>
+</div>
+
+<script>
+    function sendRequest(){
+      const text1 = document.getElementById('text1');
+      const text2 = document.getElementById('text2');
+      if (!text1 || !text2) {
+          return;
+      }
+      fetch('/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+              "text1": text1.value,
+              "text2": text2.value
+          }),
+      }).then((r) => r.json()).then((r) => {
+          console.log(r);
+          document.getElementById("percent").innerHTML = r.percent;
+      })
+    }
+</script>
+</body>
+</html>
